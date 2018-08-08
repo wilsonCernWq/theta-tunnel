@@ -20,9 +20,9 @@ ORANGE="\033[1;33m"
 NC="\033[0m"
 
 ssh -L $PORT:localhost:$PORT ${USER}@theta.alcf.anl.gov <<-1
-	printf "${ORANGE}>>> thetalogin:${PORT} \u2192 thetamom1:${PORT}${NC}\n"
+	printf "${ORANGE}>>> [SSH] thetalogin:${PORT} "'\u2192'" thetamom1:${PORT}${NC}"'\n'
 	ssh -L ${PORT}:localhost:${PORT} thetamom1 <<-2
-		printf "${GREEN}>>> thetamom1:${PORT} \u2192 nid${NODE}:${PORT}${NC}\n"
+		printf "${GREEN}>>> [SSH] thetamom1:${PORT} "'\u2192'" nid${NODE}:${PORT}${NC}"'\n'
 		ssh -N -L ${PORT}:localhost:$PORT nid${NODE}
 	2
 1

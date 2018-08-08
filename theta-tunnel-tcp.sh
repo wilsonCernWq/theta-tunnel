@@ -10,14 +10,18 @@ if [ "$1" == "-h" ]; then
 fi
 
 USER=$1
-WORKER_ID=`printf "%05d" $2`
+NODE=`printf "%05d" $2`
 PORT=$3
 
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+ORANGE="\033[1;33m"
+NC="\033[0m"
+
 ssh -L $PORT:localhost:$PORT ${USER}@theta.alcf.anl.gov <<-1
-	echo "Opening tunnel to mom node ..."
-	ssh -L $PORT:localhost:$PORT thetamom1 <<-2
-		echo "Opening socat to nid${WORKER_ID}:${PORT} ..."
-		socat TCP-LISTEN:$PORT,reuseaddr TCP:nid${WORKER_ID}:$PORT
+	printf "${ORANGE}>>> [SSH] thetalogin:${PORT} "'\u2192'" thetamom1:${PORT}${NC}"'\n'
+	ssh -L ${PORT}:localhost:${PORT} thetamom1 <<-2
+		printf "${GREEN}>>> [TCP socat] thetamom1:${PORT} "'\u2192'" nid${NODE}:${PORT}${NC}"'\n'
+		socat TCP-LISTEN:$PORT,reuseaddr TCP:nid${NODE}:${PORT}
 	2
 1
-
